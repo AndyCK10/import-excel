@@ -22,7 +22,6 @@ class MemberPointImportController extends Controller
             return $query->where('name', 'like', "%{$search}%")
                 ->orWhere('member_code', 'like', "%{$search}%")
                 ->orWhere('bar_code', 'like', "%{$search}%");
-            // ->orWhere('province', 'like', "%{$search}%");
         })
             ->when($province, fn($q) => $q->where('province', $province))
             ->orderBy('name')

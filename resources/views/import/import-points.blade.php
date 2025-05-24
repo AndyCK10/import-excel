@@ -52,103 +52,106 @@
                         }
                     </style>
 
-                    <div class="container">
-                        <h2>Import Point</h2>
 
-                        @if (session('success'))
-                            <div class="alert alert-success">{{ session('success') }}</div>
-                        @endif
+                    <h2>Import Point</h2>
 
-                        <form action="{{ route('points.import') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="mb-3 grid-container">
-                                <input class="form-control" type="file" id="excel_file" name="excel_file" required>
-                                <button type="submit" class="btn btn-info ml-2">Import Excel</button>
-                            </div>
+                    @if (session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
 
-                        </form>
+                    <form action="{{ route('points.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3 grid-container">
+                            <input class="form-control" type="file" id="excel_file" name="excel_file" required>
+                            <button type="submit" class="btn btn-info ml-2">Import Excel</button>
+                        </div>
 
-                        <h2>Search</h2>
-                        <form method="GET" action="{{ route('dashboard') }}">
-                            <div class="mb-3 grid-container">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="mb-3 row">
-                                            <label for="staticEmail" class="col-sm-3 col-form-label">คำค้นหา: </label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="search" value="{{ request('search') }}"
-                                                    placeholder="" class="form-control" />
-                                            </div>
-                                        </div>
-                                    </div>
+                    </form>
 
-                                    <div class="col-6">
-                                        <div class="mb-3 row">
-                                            <label for="staticEmail" class="col-sm-3 col-form-label">เขตการขาย: </label>
-                                            <div class="col-sm-9">
-                                                <select name="province" class="form-select">
-                                                    <option value="">ทั้งหมด</option>
-                                                    @foreach ($provinces as $dept)
-                                                        <option value="{{ $dept }}"
-                                                            {{ $dept == request('province') ? 'selected' : '' }}>
-                                                            {{ $dept }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                    <h2>Search</h2>
+                    <form method="GET" action="{{ route('dashboard') }}">
+                        <div class="mb-3 grid-container">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="mb-3 row">
+                                        <label for="staticEmail" class="col-sm-3 col-form-label">คำค้นหา: </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="search" value="{{ request('search') }}"
+                                                placeholder="" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-auto text-center">
-                                    <button type="submit" class="btn btn-info ml-2">ค้นหา</button>
+
+                                <div class="col-6">
+                                    <div class="mb-3 row">
+                                        <label for="staticEmail" class="col-sm-3 col-form-label">เขตการขาย: </label>
+                                        <div class="col-sm-9">
+                                            <select name="province" class="form-select">
+                                                <option value="">ทั้งหมด</option>
+                                                @foreach ($provinces as $dept)
+                                                    <option value="{{ $dept }}"
+                                                        {{ $dept == request('province') ? 'selected' : '' }}>
+                                                        {{ $dept }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="col-auto text-center">
+                                <button type="submit" class="btn btn-info ml-2">ค้นหา</button>
+                            </div>
+                        </div>
 
-                        </form>
+                    </form>
 
-                        <h4>Point:</h4>
-                        <table class="table table-bordered">
-                            <thead>
+                    <h4>Point:</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>เขตการขาย</th>
+                                <th>รหัสลูกค้า</th>
+                                <th>รหัสบาร์โค้ด</th>
+                                <th>ชื่อลูกค้า</th>
+                                <th>สถานะ</th>
+                                <th>วันที่ดึงข้อมูล</th>
+                                <th>แต้มสะสม</th>
+                                <th>แต้มใช้ไป</th>
+                                <th>แต้มคงเหลือ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($previewData as $item)
                                 <tr>
-                                    <th>#</th>
-                                    <th>เขตการขาย</th>
-                                    <th>รหัสลูกค้า</th>
-                                    <th>รหัสบาร์โค้ด</th>
-                                    <th>ชื่อลูกค้า</th>
-                                    <th>สถานะ</th>
-                                    <th>วันที่ดึงข้อมูล</th>
-                                    <th>แต้มสะสม</th>
-                                    <th>แต้มใช้ไป</th>
-                                    <th>แต้มคงเหลือ</th>
+                                    <td>{{ $loop->iteration + ($previewData->currentPage() - 1) * $previewData->perPage() }}
+                                    </td>
+                                    <td>{{ $item['province'] }}</td>
+                                    <td>{{ $item['member_code'] }}</td>
+                                    <td>{{ $item['bar_code'] }}</td>
+                                    <td>{{ $item['name'] }}</td>
+                                    <td>
+                                        @if ($item['status'] == 1)
+                                            {{ 'ยืนยันสมาชิกแล้ว' }}
+                                        @else
+                                            {{ 'ยังไม่ได้ยืนยันสมาชิก' }}
+                                        @endif
+                                    </td>
+                                    <td>{{ $item['date_sync'] }}</td>
+                                    <td class="text-right">{{ $item['value'] }}</td>
+                                    <td class="text-right">{{ $item['point_use'] }}</td>
+                                    <td class="text-right">{{ $item['point_remain'] }}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($previewData as $item)
-                                    <tr>
-                                        <td>{{ $loop->iteration + ($previewData->currentPage() - 1) * $previewData->perPage() }}
-                                        </td>
-                                        <td>{{ $item['province'] }}</td>
-                                        <td>{{ $item['member_code'] }}</td>
-                                        <td>{{ $item['bar_code'] }}</td>
-                                        <td>{{ $item['name'] }}</td>
-                                        <td>{{ $item['status'] }}</td>
-                                        <td>{{ $item['date_sync'] }}</td>
-                                        <td class="text-right">{{ $item['value'] }}</td>
-                                        <td class="text-right">{{ $item['point_use'] }}</td>
-                                        <td class="text-right">{{ $item['point_remain'] }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="9" class="text-center">ไม่พบข้อมูล</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                        {{ $previewData->links() }}
+                            @empty
+                                <tr>
+                                    <td colspan="9" class="text-center">ไม่พบข้อมูล</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                    {{ $previewData->links() }}
 
-
-
-                    </div>
                 </div>
             </div>
         </div>
