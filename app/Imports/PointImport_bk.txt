@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Imports;
+
+use App\Models\Point;
+use Maatwebsite\Excel\Concerns\ToModel;
+
+class PointImport implements ToModel
+{
+    /**
+    * @param array $row
+    *
+    * @return \Illuminate\Database\Eloquent\Model|null
+    */
+    public function model(array $row)
+    {
+        return new Point([
+            'name'  => $row[0],
+            'email' => $row[1],
+            'password' => bcrypt($row[2]),
+        ]);
+    }
+}
