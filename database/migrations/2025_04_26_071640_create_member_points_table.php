@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('point_use', 14, 2)->nullable();
             $table->decimal('point_remain', 14, 2)->nullable();
             $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }

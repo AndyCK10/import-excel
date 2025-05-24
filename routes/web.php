@@ -20,9 +20,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [MemberPointImportController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -30,11 +31,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // Route::get('/import', [ImportController::class, 'showForm'])->name('excel.import');
 
-    Route::get('/products', [MemberPointImportController::class, 'showImportForm'])->name('products.import.form');
-    Route::post('/products-preview', [MemberPointImportController::class, 'previewExcel'])->name('products.preview');
-    Route::post('/products-import', [MemberPointImportController::class, 'importExcel'])->name('products.import');
+    Route::get('/points', [MemberPointImportController::class, 'index'])->name('points.index');
+    Route::post('/points-preview', [MemberPointImportController::class, 'previewExcel'])->name('points.preview');
+    Route::post('/points-import', [MemberPointImportController::class, 'importExcel'])->name('points.import');
 
     // Route::post('/point/import', [MemberPointImportController::class, 'importExcel'])->name('import.users');
+
+    Route::get('/oldformdata', [MemberPointImportController::class, 'create'])->name('oldformdata');
+    Route::post('/oldformdata', [MemberPointImportController::class, 'create'])->name('oldformdata');
 });
 
 require __DIR__.'/auth.php';
