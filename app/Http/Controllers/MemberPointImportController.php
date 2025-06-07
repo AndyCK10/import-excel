@@ -24,7 +24,9 @@ class MemberPointImportController extends Controller
                 ->orWhere('bar_code', 'like', "%{$search}%");
         })
             ->when($province, fn($q) => $q->where('province', $province))
-            ->orderBy('name')
+            ->orderBy('member_code', 'ASC')
+			->orderBy('bar_code', 'ASC')
+			->orderBy('name', 'ASC')
             ->paginate(20)
             ->appends(['search' => $search]); // preserve query in pagination links
 
