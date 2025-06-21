@@ -89,7 +89,8 @@ class MemberPointImportController extends Controller
                         'value'             => $value[5],
                         'point_use'         => $value[6],
                         'point_remain'      => $value[6],
-                        'province'          => $province,
+                        // 'province'          => $province,
+                        'province'          => $value[7], // todo
                     ];
                 }
             }
@@ -132,7 +133,8 @@ class MemberPointImportController extends Controller
                         $excelTmp->value                        = $value[5];
                         $excelTmp->point_use                    = $value[6];
                         $excelTmp->point_remain                 = $value[7];
-                        $excelTmp->province                     = $province;
+                        // $excelTmp->province                     = $province;
+                        $excelTmp->province                     = $value[8]; // todo
                         $excelTmp->updated_by                   = $user->id;
                         $excelTmp->save();
                     } else {
@@ -145,7 +147,8 @@ class MemberPointImportController extends Controller
                         $excelTmp->value                        = $value[5];
                         $excelTmp->point_use                    = $value[6];
                         $excelTmp->point_remain                 = $value[7];
-                        $excelTmp->province                     = $province;
+                        // $excelTmp->province                     = $province;
+                        $excelTmp->province                     = $value[8]; // todo
                         $excelTmp->created_by                   = $user->id;
                         $excelTmp->save();
                     }

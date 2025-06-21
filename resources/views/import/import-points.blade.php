@@ -50,6 +50,21 @@
                             display: grid;
                             grid-template-columns: 1fr auto;
                         }
+
+                        .filter-container {
+                            display: grid;
+                            grid-template-columns: 1fr auto;
+                        }
+
+                        .table-scrollable-x-auto {
+                            overflow-x: auto;
+                        }
+
+                        @media screen and (max-width: 575px) {
+                            .filter-container {
+                                display: block;
+                            }
+                        }
                     </style>
 
 
@@ -70,7 +85,7 @@
 
                     <h2>Search</h2>
                     <form method="GET" action="{{ route('dashboard') }}">
-                        <div class="mb-3 grid-container">
+                        <div class="mb-3 filter-container">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="mb-3 row">
@@ -107,49 +122,52 @@
                     </form>
 
                     <h4>Point:</h4>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>เขตการขาย</th>
-                                <th>รหัสลูกค้า</th>
-                                <th>รหัสบาร์โค้ด</th>
-                                <th>ชื่อลูกค้า</th>
-                                <th>สถานะ</th>
-                                <th>วันที่ดึงข้อมูล</th>
-                                <th>แต้มสะสม</th>
-                                <th>แต้มใช้ไป</th>
-                                <th>แต้มคงเหลือ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($previewData as $item)
+                    <div class=" table-scrollable-x-auto">
+                        <table class="table table-bordered">
+                            <thead>
                                 <tr>
-                                    <td>{{ $loop->iteration + ($previewData->currentPage() - 1) * $previewData->perPage() }}
-                                    </td>
-                                    <td>{{ $item['province'] }}</td>
-                                    <td>{{ $item['member_code'] }}</td>
-                                    <td>{{ $item['bar_code'] }}</td>
-                                    <td>{{ $item['name'] }}</td>
-                                    <td>
-                                        @if ($item['status'] == 1)
-                                            {{ 'ยืนยันสมาชิกแล้ว' }}
-                                        @else
-                                            {{ 'ยังไม่ได้ยืนยันสมาชิก' }}
-                                        @endif
-                                    </td>
-                                    <td>{{ $item['date_sync'] }}</td>
-                                    <td class="text-right">{{ $item['value'] }}</td>
-                                    <td class="text-right">{{ $item['point_use'] }}</td>
-                                    <td class="text-right">{{ $item['point_remain'] }}</td>
+                                    <th>#</th>
+                                    <th>เขตการขาย</th>
+                                    <th>รหัสลูกค้า</th>
+                                    <th>รหัสบาร์โค้ด</th>
+                                    <th>ชื่อลูกค้า</th>
+                                    <th>สถานะ</th>
+                                    <th>วันที่ดึงข้อมูล</th>
+                                    <th>แต้มสะสม</th>
+                                    <th>แต้มใช้ไป</th>
+                                    <th>แต้มคงเหลือ</th>
                                 </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="9" class="text-center">ไม่พบข้อมูล</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @forelse ($previewData as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration + ($previewData->currentPage() - 1) * $previewData->perPage() }}
+                                        </td>
+                                        <td>{{ $item['province'] }}</td>
+                                        <td>{{ $item['member_code'] }}</td>
+                                        <td>{{ $item['bar_code'] }}</td>
+                                        <td>{{ $item['name'] }}</td>
+                                        <td>
+                                            @if ($item['status'] == 1)
+                                                {{ 'ยืนยันสมาชิกแล้ว' }}
+                                            @else
+                                                {{ 'ยังไม่ได้ยืนยันสมาชิก' }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $item['date_sync'] }}</td>
+                                        <td class="text-right">{{ $item['value'] }}</td>
+                                        <td class="text-right">{{ $item['point_use'] }}</td>
+                                        <td class="text-right">{{ $item['point_remain'] }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="10" class="text-center">ไม่พบข้อมูล</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
                     {{ $previewData->links() }}
 
                 </div>

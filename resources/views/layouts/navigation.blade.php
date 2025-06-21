@@ -7,7 +7,7 @@
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         {{-- <x-application-logo class="block h-9 w-auto fill-current text-gray-800" /> --}}
-                        <img src="http://localhost/cpshomecenter_new/wp-content/uploads/2023/09/logo_n.png" class="block h-9 w-auto fill-current text-gray-800" alt="CPS Home Center ศูนย์รวมวัสดุก่อสร้าง เชียงใหม่ จำหน่ายวัสดุก่อสร้างครบวงจร ถูกและดี ทันสมัย">
+                        <img src="{{ asset('images/app/logo_cps_mobile.png') }}" class="block h-9 w-auto fill-current text-gray-800" alt="CPS Home Center ศูนย์รวมวัสดุก่อสร้าง เชียงใหม่ จำหน่ายวัสดุก่อสร้างครบวงจร ถูกและดี ทันสมัย">
                     </a>
                 </div>
 
